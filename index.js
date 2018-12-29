@@ -42,7 +42,6 @@ function initCheckForNewEntries() {
 }
 
 function checkForNewEntries() {
-  console.log('checkForNewEntries');
   async.series([
     function setAuth(step) {
       doc.useServiceAccountAuth(googleCredentials, step);
