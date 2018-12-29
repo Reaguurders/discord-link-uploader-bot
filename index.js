@@ -100,3 +100,25 @@ function sendDiscordMessage(message, topZoveelPositie) {
     }
   });
 }
+
+const startScriptFromId = 686;
+function newCreatePostedTrackerFromId(id) {
+  let jsonData = {};
+  for (let i = 1337; i >= 0; i--) {
+    if (i > id) {
+      jsonData[i] = true;
+    } else {
+      jsonData[i] = false;
+    }
+  }
+  writeDataToFile(jsonData);
+}
+
+function writeDataToFile(data) {
+  const newData = JSON.stringify(data);  
+  fs.writeFile(trackerFile, newData, function (err) {
+    if (err) {
+      return console.log(err);
+    }
+  });
+}
