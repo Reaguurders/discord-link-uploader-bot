@@ -1,0 +1,22 @@
+{
+  "name": "dumpert-topzoveel-link-uploader",
+  "version": "1.0.0",
+  "description": "Dumpert TopZoveel link uploader bot for Discord. Links read from Google Docs spreadsheet.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/exquise/dumpert-topzoveel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/exquise/dumpert-topzoveel/issues"
+  },
+  "homepage": "https://gitlab.com/exquise/dumpert-topzoveel#readme",
+  "dependencies": {
+    "discord.io": "github:woor/discord.io#gateway_v6",
+    "google-spreadsheet": "^2.0.6",
+    "winston": "2.*"
+  }
+}
