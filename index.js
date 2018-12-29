@@ -35,10 +35,9 @@ bot.on('ready', function (evt) {
 });
 
 function initCheckForNewEntries() {
-  // setInterval(function () {
-  //   checkForNewEntries();
-  // }, 1200000);
-  checkForNewEntries();
+  setInterval(function () {
+    checkForNewEntries();
+  }, 600000);
 }
 
 function checkForNewEntries() {
@@ -51,7 +50,7 @@ function checkForNewEntries() {
         sheet = content.worksheets[0];
         sheet.getRows({
           offset: 1,
-          limit: 1,
+          // limit: 1,
         }, function(err, rows) {
           rows.forEach(row => {
             const topZoveelPositie = row.nummer;
