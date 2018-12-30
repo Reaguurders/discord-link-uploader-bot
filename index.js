@@ -42,7 +42,7 @@ bot.on('ready', function (evt) {
 function initCheckForNewEntries() {
   setInterval(function () {
     checkForNewEntries();
-  }, 10000);
+  }, 1000);
 }
 
 function checkForNewEntries() {
@@ -58,16 +58,18 @@ function checkForNewEntries() {
           offset: 1,
           // limit: 1,
         }, function(err, rows) {
+          let newEntry = false;
           rows.forEach(row => {
             const topZoveelPositie = row.nummer;
             if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
+              newEntry = true;
               sendDiscordMessage(topZoveelPositie + 
                 ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
             }
-            else {
-              logger.info('All positions posted!');
-            }
-          })
+          });
+          if (newEntry === false) {
+            logger.info('All entries posted...');
+          }
         });
       });
     }
