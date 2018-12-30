@@ -15,7 +15,7 @@
   },
   "homepage": "https://gitlab.com/exquise/dumpert-topzoveel#readme",
   "dependencies": {
-    "discord.io": "github:woor/discord.io#gateway_v6",
+    "discord.io": "woor/discord.io#gateway_v6",
     "google-spreadsheet": "^2.0.6",
     "winston": "2.*"
   }
