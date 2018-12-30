@@ -1,11 +1,18 @@
 // Dag Reaguurder! Dit alles was niet mogelijk geweest zonder @Dyon, @Ruben en @Polatic
 // Niet te kritisch op de code a.u.b., haast, drank, brak, je kent het wel..
+// Run "npm install https://github.com/woor/discord.io/tarball/gateway_v6" nog even met de hand, op de server had ik problemen met installatie hiervan.. Is wel nodig
+// Eeeeeeeen, 
 
 // TODO: Automatically get channelID ( // to: [Object.keys(bot.channels)], ?)
 // const channelID = "528606323089211404"; // Exquickie test
-// const channelID = "528911109097521154"; // Dumpert test
-const channelID = "528521165057032202"; // Dumpert top zoveel
-const dumpertChannelID = "528521165057032202";
+// const channelID = "528521165057032202"; // Dumpert top zoveel // Hier liever niet mee kutten, tenzij je echt weet wat je doet, dit is het echt kanaal...
+
+
+
+// IMPORTANT!!!!!!!!!!!! Vul hier je testkanaal ID in...
+const channelID = '';
+
+
 
 const googleCredentials = require('./creds/google-creds.json');
 const token = require('./creds/token.json').token;
