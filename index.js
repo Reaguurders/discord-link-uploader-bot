@@ -37,6 +37,8 @@ bot.on('ready', function (evt) {
   logger.info('Connected');
   logger.info(bot.username + ' - (' + bot.id + ')');
   initCheckForNewEntries();
+}, function(event) {
+  logger.info('Callback from bot.on(ready)', event);
 });
 
 function initCheckForNewEntries() {
