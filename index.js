@@ -7,7 +7,7 @@
 // creds/google-creds.json => service account info
 // creds/token.js => token van de bot (die je moet dus even vragen)
 
-// Node v10.14.2
+// Node v10.14.2 - Kan denk ik belangrijk zijn, check dit even met "node -v", update indien noodzakelijk, bij voorkeur exact deze versie als je tegen problemen aanloopt..
 
 // Voeg bot toe aan je eigen testkanaal: https://discordapp.com/oauth2/authorize?&client_id=528873409497661441&scope=bot&permissions=8
 
