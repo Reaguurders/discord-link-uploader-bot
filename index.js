@@ -69,8 +69,6 @@ function checkForNewEntries() {
               const topZoveelPositie = row.nummer;
               if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
                 newEntry = true;
-                // sendDiscordMessage(topZoveelPositie + 
-                  // ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
                 sendDiscordMessage(`${topZoveelPositie}: ${row.titel} - ${row['dumpert-link']}`, topZoveelPositie);
               }
             });
@@ -135,6 +133,8 @@ function newCreatePostedTrackerFromId(id) {
   }
   writeDataToFile(jsonData);
 }
+
+// newCreatePostedTrackerFromId(startScriptFromId);
 
 function writeDataToFile(data) {
   const newData = JSON.stringify(data);  
