@@ -21,7 +21,7 @@ logger.add(logger.transports.Console, {
 });
 logger.level = 'debug';
 
-logger.info('Dumpert TopZoveel - Link uploader inititated...');
+logger.info('Dumpert TopZoveel - Link uploader initialized...');
 
 // Initialize Discord Bot
 const bot = new Discord.Client({
