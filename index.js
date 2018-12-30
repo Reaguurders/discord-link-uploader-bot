@@ -7,6 +7,8 @@
 // creds/google-creds.json => service account info
 // creds/token.js => token van de bot (die je moet dus even vragen)
 
+// Node v10.14.2
+
 // Voeg bot toe aan je eigen testkanaal: https://discordapp.com/oauth2/authorize?&client_id=528873409497661441&scope=bot&permissions=8
 
 // TODO: Automatically get channelID ( // to: [Object.keys(bot.channels)], ?)
