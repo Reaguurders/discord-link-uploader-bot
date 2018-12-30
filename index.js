@@ -33,13 +33,20 @@ const GoogleSpreadsheet = require('google-spreadsheet');
 const fs = require('fs');
 
 // Real Dumpert TopZoveel ID
-const spreadsheetId = '1eUNwGM76Pp6T18VWx3ZE_sY7kEIsNgPgKr1a1NjtcTM';
+const spreadsheetId = process.env.SPREADSHEET_ID;
 
 // Test Dumpert TopZoveel ID
 // const spreadsheetId = '1LdwTUOxlHaeNrK4FJFsMu5tjpqvBy0i6196vHLPiink';
 
-const doc = new GoogleSpreadsheet(spreadsheetId);
 const trackerFile = './entries.json';
+const notifyFile = './notify.json';
+
+// Create the files required for use if they don't exist
+if (!fs.existsSync(notifyFile)) {
+  fs.writeFileSync(notifyFile, "[]");
+}
+
+const doc = new GoogleSpreadsheet(spreadsheetId);
 const postedObject = readPostedObjectFromFile();
 
 let checking = false;
@@ -132,6 +139,9 @@ function writeIdToFile(id) {
 
 function sendDiscordMessage(message, topZoveelPositie) {
   logger.info('New topZoveel posted! ' + message);
+
+  notifyUsers(message);
+
   bot.sendMessage({
     to: channelID,
     message: message
@@ -231,14 +241,14 @@ bot.on('message', function (user, userID, channelID, message, evt) {
   function addUserToNotify(userID) {
      logger.info("Notifing users");
 
-      fs.readFile("notify.json", (err, data) => {  // READ
+      fs.readFile(notifyFile, (err, data) => {  // READ
          if (err) {
              return logger.info(err);
          };
          var data = JSON.parse(data.toString());
          data.push(userID);
 
-          var writeData = fs.writeFile("notify.json", JSON.stringify(data), (err, result) => {  // WRITE
+          var writeData = fs.writeFile(notifyFile, JSON.stringify(data), (err, result) => {  // WRITE
              if (err) {
                  return logger.info(err);
              } else {
@@ -249,7 +259,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
  }
 
   function removeUserFromNotify(userID) {
-     fs.readFile("notify.json", (err, data) => {  // READ
+     fs.readFile(notifyFile, (err, data) => {  // READ
          if (err) {
              return logger.info(err);
          };
@@ -261,7 +271,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 
           data = filtered;
 
-          var writeData = fs.writeFile("notify.json", JSON.stringify(data), (err, result) => {  // WRITE
+          var writeData = fs.writeFile(notifyFile, JSON.stringify(data), (err, result) => {  // WRITE
              if (err) {
                  return logger.info(err);
              } else {
@@ -272,7 +282,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
  }
 
   function notifyUsers(message) {
-     fs.readFile("notify.json", (err, data) => {  // READ
+     fs.readFile(notifyFile, (err, data) => {  // READ
          if (err) {
              return logger.info(err);
          };
