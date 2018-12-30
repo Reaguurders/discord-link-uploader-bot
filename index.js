@@ -1,3 +1,5 @@
+// Goedemorgen Reaguurder!
+
 // TODO: Automatically get channelID
 const channelID = "528606323089211404";
 
