@@ -44,7 +44,7 @@ bot.on('ready', function (evt) {
 function initCheckForNewEntries() {
   setInterval(function () {
     checkForNewEntries();
-  }, 1000);
+  }, 60000);
 }
 
 function checkForNewEntries() {
