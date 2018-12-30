@@ -10,7 +10,11 @@ const async = require('async');
 const GoogleSpreadsheet = require('google-spreadsheet');
 const fs = require('fs');
 
-const spreadsheetId = '1eUNwGM76Pp6T18VWx3ZE_sY7kEIsNgPgKr1a1NjtcTM';
+// Real Dumpert TopZoveel ID
+// const spreadsheetId = '1eUNwGM76Pp6T18VWx3ZE_sY7kEIsNgPgKr1a1NjtcTM';
+
+// Test Dumpert TopZoveel ID
+const spreadsheetId = '1LdwTUOxlHaeNrK4FJFsMu5tjpqvBy0i6196vHLPiink';
 const doc = new GoogleSpreadsheet(spreadsheetId);
 const trackerFile = './trackers/posted-tracker.json';
 
