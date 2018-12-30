@@ -18,10 +18,10 @@ const fs = require('fs');
 // Test Dumpert TopZoveel ID
 const spreadsheetId = '1LdwTUOxlHaeNrK4FJFsMu5tjpqvBy0i6196vHLPiink';
 const doc = new GoogleSpreadsheet(spreadsheetId);
-const trackerFile = './trackers/posted-tracker.json';
+const trackerFile = './entries.json';
 const postedObject = readPostedObjectFromFile();
 
-const intervalCheck = 10 * 1000;
+const intervalCheck = 30 * 1000;
 
 let checking = false;
 
@@ -69,7 +69,7 @@ function checkForNewEntries() {
             let newEntry = false;
             rows.forEach(row => {
               const topZoveelPositie = row.nummer;
-              if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
+              if (postedObject[topZoveelPositie].posted === false && row['dumpert-link']) {
                 newEntry = true;
                 sendDiscordMessage(`${topZoveelPositie}: ${row.titel} - ${row['dumpert-link']}`, topZoveelPositie);
               }
@@ -97,7 +97,7 @@ function readPostedObjectFromFile() {
 
 function writeIdToFile(id) {
   logger.info('New id written to file!');
-  postedObject[id] = true;
+  postedObject[id].posted = true;
   const newData = JSON.stringify(postedObject);  
   fs.writeFile(trackerFile, newData, function (err) {
     if (err) {
@@ -126,11 +126,15 @@ function sendDiscordMessage(message, topZoveelPositie) {
 const startScriptFromId = 686;
 function newCreatePostedTrackerFromId(id) {
   let jsonData = {};
-  for (let i = 1337; i >= 0; i--) {
+  for (let i = 1337; i > 0; i--) {
     if (i > id) {
-      jsonData[i] = true;
+      jsonData[i] = {
+        postedInDiscord: true
+      };
     } else {
-      jsonData[i] = false;
+      jsonData[i] = {
+        postedInDiscord: false
+      };
     }
   }
   writeDataToFile(jsonData);
