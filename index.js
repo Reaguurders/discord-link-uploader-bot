@@ -34,7 +34,6 @@ const bot = new Discord.Client({
 });
 bot.on('ready', function (evt) {
   logger.info('Connected');
-  logger.info('Logged in as: ');
   logger.info(bot.username + ' - (' + bot.id + ')');
   initCheckForNewEntries();
 });
@@ -46,6 +45,7 @@ function initCheckForNewEntries() {
 }
 
 function checkForNewEntries() {
+  console.log('checkForNewEntries');
   async.series([
     function setAuth(step) {
       doc.useServiceAccountAuth(googleCredentials, step);
@@ -92,7 +92,7 @@ function writeIdToFile(postedObject) {
 }
 
 function sendDiscordMessage(message, topZoveelPositie) {
-  logger.info(message);
+  logger.info('New topZoveel posted!', message);
   bot.sendMessage({
     to: channelID,
     message: message
