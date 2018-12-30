@@ -92,6 +92,7 @@ function writeIdToFile(postedObject) {
 }
 
 function sendDiscordMessage(message, topZoveelPositie) {
+  logger.info(message);
   bot.sendMessage({
     to: channelID,
     message: message
