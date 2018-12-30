@@ -24,7 +24,7 @@ logger.level = 'debug';
 logger.info('Dumpert TopZoveel - Link uploader inititated...');
 
 // Initialize Discord Bot
-let bot = new Discord.Client({
+const bot = new Discord.Client({
   token: token,
   autorun: true
 });
