@@ -17,6 +17,7 @@ const fs = require('fs');
 const spreadsheetId = '1LdwTUOxlHaeNrK4FJFsMu5tjpqvBy0i6196vHLPiink';
 const doc = new GoogleSpreadsheet(spreadsheetId);
 const trackerFile = './trackers/posted-tracker.json';
+const postedObject = readPostedObjectFromFile();
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -45,25 +46,27 @@ function initCheckForNewEntries() {
 }
 
 function checkForNewEntries() {
-  console.log('checkForNewEntries');
   async.series([
     function setAuth(step) {
       doc.useServiceAccountAuth(googleCredentials, step);
     },
     function checkEntries(step) {
+      logger.info('Checking entries...');
       doc.getInfo(function (err, content) {
         sheet = content.worksheets[0];
         sheet.getRows({
           offset: 1,
           // limit: 1,
         }, function(err, rows) {
-          let postedObject = readPostedObjectFromFile();
           rows.forEach(row => {
             const topZoveelPositie = row.nummer;
             if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
               sendDiscordMessage(topZoveelPositie + 
                 ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
-            }  
+            }
+            else {
+              logger.info('All positions posted!');
+            }
           })
         });
       });
@@ -81,7 +84,8 @@ function readPostedObjectFromFile() {
   return data;
 }
 
-function writeIdToFile(postedObject) {
+function writeIdToFile(id) {
+  logger.info('New id written to file!');
   postedObject[id] = true;
   const newData = JSON.stringify(postedObject);  
   fs.writeFile(trackerFile, newData, function (err) {
@@ -92,7 +96,7 @@ function writeIdToFile(postedObject) {
 }
 
 function sendDiscordMessage(message, topZoveelPositie) {
-  logger.info('New topZoveel posted!', message);
+  logger.info('New topZoveel posted! ID: ' + topZoveelPositie, message);
   bot.sendMessage({
     to: channelID,
     message: message
