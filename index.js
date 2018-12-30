@@ -19,6 +19,10 @@ const doc = new GoogleSpreadsheet(spreadsheetId);
 const trackerFile = './trackers/posted-tracker.json';
 const postedObject = readPostedObjectFromFile();
 
+const intervalCheck = 10 * 1000;
+
+let checking = false;
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
@@ -37,49 +41,51 @@ bot.on('ready', function (evt) {
   logger.info('Connected');
   logger.info(bot.username + ' - (' + bot.id + ')');
   initCheckForNewEntries();
-}, function(event) {
-  logger.info('Callback from bot.on(ready)', event);
 });
 
 function initCheckForNewEntries() {
   setInterval(function () {
     checkForNewEntries();
-  }, 60000);
+  }, intervalCheck);
 }
 
 function checkForNewEntries() {
-  async.series([
-    function setAuth(step) {
-      doc.useServiceAccountAuth(googleCredentials, step);
-    },
-    function checkEntries(step) {
-      logger.info('Checking entries...');
-      doc.getInfo(function (err, content) {
-        sheet = content.worksheets[0];
-        sheet.getRows({
-          offset: 1,
-          // limit: 1,
-        }, function(err, rows) {
-          let newEntry = false;
-          rows.forEach(row => {
-            const topZoveelPositie = row.nummer;
-            if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
-              newEntry = true;
-              sendDiscordMessage(topZoveelPositie + 
-                ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
+  if (checking === false) {
+    async.series([
+      function setAuth(step) {
+        doc.useServiceAccountAuth(googleCredentials, step);
+      },
+      function checkEntries(step) {
+        logger.info('Checking entries...');
+        checking = true;
+        doc.getInfo(function (err, content) {
+          sheet = content.worksheets[0];
+          sheet.getRows({
+            offset: 1,
+            // limit: 1,
+          }, function(err, rows) {
+            let newEntry = false;
+            rows.forEach(row => {
+              const topZoveelPositie = row.nummer;
+              if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
+                newEntry = true;
+                sendDiscordMessage(topZoveelPositie + 
+                  ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
+              }
+            });
+            if (newEntry === false) {
+              logger.info('All entries posted...');
             }
           });
-          if (newEntry === false) {
-            logger.info('All entries posted...');
-          }
         });
-      });
-    }
-  ], function(error) {
-    if (error) {
-      logger.error('Error: ' + error);
-    }
-  });
+        checking = false;
+      }
+    ], function(error) {
+      if (error) {
+        logger.error('Error: ' + error);
+      }
+    });
+  }
 }
 
 function readPostedObjectFromFile() {
