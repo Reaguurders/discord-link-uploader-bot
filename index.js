@@ -113,15 +113,15 @@ function checkForNewEntries() {
 }
 
 function readPostedObjectFromFile() {
-  let rawdata = fs.readFileSync(trackerFile);
-  let data = JSON.parse(rawdata);
+  let rawdata = fs.readFileSync(trackerFile);  
+  let data = JSON.parse(rawdata);  
   return data;
 }
 
 function writeIdToFile(id) {
   logger.info('Writing bot post to file!');
   postedObject[id].postedInDiscord = true;
-  const newData = JSON.stringify(postedObject);
+  const newData = JSON.stringify(postedObject);  
   fs.writeFile(trackerFile, newData, function (err) {
     if (err) {
       return logger.error(err);
@@ -131,9 +131,6 @@ function writeIdToFile(id) {
 
 function sendDiscordMessage(message, topZoveelPositie) {
   logger.info('New topZoveel posted! ' + message);
-
-  notifyUsers(message);
-
   bot.sendMessage({
     to: channelID,
     message: message
@@ -185,106 +182,10 @@ function fillPostedObject(row) {
 
 function writeDataToFile(data) {
   logger.info('writeDataToFile()');
-  const newData = JSON.stringify(data);
+  const newData = JSON.stringify(data);  
   fs.writeFile(trackerFile, newData, function (err) {
     if (err) {
       return logger.error(err);
     }
   });
-}
-
-bot.on('message', function (user, userID, channelID, message, evt) {
-  if (message.substring(0, 1) == '!') {
-    var args = message.substring(1).split(' ');
-    var cmd = args[0];
-
-    args = args.splice(1);
-    switch (cmd) {
-      case 'notify':
-        switch(args[0]) {
-            case 'on':
-                addUserToNotify(userID)
-                bot.sendMessage({
-                  to: userID,
-                  message: 'Je zult een notificatie ontvangen bij ieder nieuw filmpje!'
-                });
-                break;
-            case 'off':
-                removeUserFromNotify(userID);
-                bot.sendMessage({
-                  to: userID,
-                  message: 'Je zult geen notificatie meer krijgen bij ieder nieuw filmpje!'
-                });
-                break;
-            default:
-                bot.sendMessage({
-                  to: userID,
-                  message: 'Wil je een notificatie ontvangen bij ieder nieuw filmpje? **!notify on**' + '\n' +
-                                'Wil je niet langer een notificatie ontvangen bij ieder nieuw filmpje? **!notify off**'
-                });
-                break;
-        }
-        break;
-      // Just add any case commands if you want to..
-    }
-  }
-});
-
-function addUserToNotify(userID) {
-    logger.info("Notifing users");
-
-    fs.readFile("notify.json", (err, data) => {  // READ
-        if (err) {
-            return logger.info(err);
-        };
-        var data = JSON.parse(data.toString());
-        data.push(userID);
-
-        var writeData = fs.writeFile("notify.json", JSON.stringify(data), (err, result) => {  // WRITE
-            if (err) {
-                return logger.info(err);
-            } else {
-                return true;
-            }
-        });
-    });
-}
-
-function removeUserFromNotify(userID) {
-    fs.readFile("notify.json", (err, data) => {  // READ
-        if (err) {
-            return logger.info(err);
-        };
-        var data = JSON.parse(data.toString());
-
-        var filtered = data.filter(function(item) {
-           return item !== userID;
-        });
-
-        data = filtered;
-
-        var writeData = fs.writeFile("notify.json", JSON.stringify(data), (err, result) => {  // WRITE
-            if (err) {
-                return logger.info(err);
-            } else {
-                return true;
-            }
-        });
-    });
-}
-
-function notifyUsers(message) {
-    fs.readFile("notify.json", (err, data) => {  // READ
-        if (err) {
-            return logger.info(err);
-        };
-        var data = JSON.parse(data.toString());
-
-        for (userID in data) {
-            bot.sendMessage({
-              to: data[userID],
-              message: message
-            });
-        }
-    });
 }
