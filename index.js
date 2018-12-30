@@ -13,17 +13,17 @@ const GoogleSpreadsheet = require('google-spreadsheet');
 const fs = require('fs');
 
 // Real Dumpert TopZoveel ID
-// const spreadsheetId = '1eUNwGM76Pp6T18VWx3ZE_sY7kEIsNgPgKr1a1NjtcTM';
+const spreadsheetId = '1eUNwGM76Pp6T18VWx3ZE_sY7kEIsNgPgKr1a1NjtcTM';
 
 // Test Dumpert TopZoveel ID
-const spreadsheetId = '1LdwTUOxlHaeNrK4FJFsMu5tjpqvBy0i6196vHLPiink';
+// const spreadsheetId = '1LdwTUOxlHaeNrK4FJFsMu5tjpqvBy0i6196vHLPiink';
+
 const doc = new GoogleSpreadsheet(spreadsheetId);
 const trackerFile = './entries.json';
 const postedObject = readPostedObjectFromFile();
 
-const intervalCheck = 30 * 1000;
-
 let checking = false;
+const intervalCheck = 5 * 1000;
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -67,9 +67,13 @@ function checkForNewEntries() {
             // limit: 1,
           }, function(err, rows) {
             let newEntry = false;
+            logger.info('Checking rows...');
             rows.forEach(row => {
               const topZoveelPositie = row.nummer;
-              if (postedObject[topZoveelPositie].posted === false && row['dumpert-link']) {
+              // console.log(row);
+              fillPostedObject(row);
+              if (postedObject[topZoveelPositie].postedInDiscord === false && row['dumpert-link'] && row.titel) {
+                logger.info('New entry!');
                 newEntry = true;
                 sendDiscordMessage(`${topZoveelPositie}: ${row.titel} - ${row['dumpert-link']}`, topZoveelPositie);
               }
@@ -96,24 +100,25 @@ function readPostedObjectFromFile() {
 }
 
 function writeIdToFile(id) {
-  logger.info('New id written to file!');
-  postedObject[id].posted = true;
+  logger.info('Writing bot post to file!');
+  postedObject[id].postedInDiscord = true;
+  console.log(postedObject[id]);
   const newData = JSON.stringify(postedObject);  
   fs.writeFile(trackerFile, newData, function (err) {
     if (err) {
-      return console.log(err);
+      return logger.error(err);
     }
   });
 }
 
 function sendDiscordMessage(message, topZoveelPositie) {
-  console.log('New topZoveel posted! ' + message);
+  logger.info('New topZoveel posted! ' + message);
   bot.sendMessage({
     to: channelID,
     message: message
   }, function(error, response) {
     if (error) {
-      console.log('Error in sendDiscordMessage: ' + error);
+      logger.error('Error in sendDiscordMessage: ' + error);
       setTimeout(function() {
         sendDiscordMessage(message);
       }, 5000);
@@ -122,6 +127,8 @@ function sendDiscordMessage(message, topZoveelPositie) {
     }
   });
 }
+
+/// vvvvv DUMMY FUNCTIONS vvvvvv ///
 
 const startScriptFromId = 686;
 function newCreatePostedTrackerFromId(id) {
@@ -140,13 +147,27 @@ function newCreatePostedTrackerFromId(id) {
   writeDataToFile(jsonData);
 }
 
+function fillPostedObject(row) {
+  postedObject[row.nummer].position = row.nummer;
+  postedObject[row.nummer].title = row.titel;
+  postedObject[row.nummer].url = row['dumpert-link'];
+  postedObject[row.nummer].uploaded = row.uploaddatum;
+  postedObject[row.nummer].uploaded = row.uploaddatum;
+  postedObject[row.nummer].views = row.views;
+  postedObject[row.nummer].kudos = row.kudos;
+  postedObject[row.nummer].nfsw = row.nfsw;
+  postedObject[row.nummer].length = row.lengte;
+  postedObject[row.nummer].thumbnail = row.thumbnail;
+}
+
 // newCreatePostedTrackerFromId(startScriptFromId);
 
 function writeDataToFile(data) {
+  logger.info('writeDataToFile()');
   const newData = JSON.stringify(data);  
   fs.writeFile(trackerFile, newData, function (err) {
     if (err) {
-      return console.log(err);
+      return logger.error(err);
     }
   });
 }
