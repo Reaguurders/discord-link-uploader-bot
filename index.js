@@ -69,8 +69,9 @@ function checkForNewEntries() {
               const topZoveelPositie = row.nummer;
               if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
                 newEntry = true;
-                sendDiscordMessage(topZoveelPositie + 
-                  ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
+                // sendDiscordMessage(topZoveelPositie + 
+                  // ': ' + row.titel + ' - ' + row['dumpert-link'], topZoveelPositie);
+                sendDiscordMessage(`${topZoveelPositie}: ${row.titel} - ${row['dumpert-link']}`, topZoveelPositie);
               }
             });
             if (newEntry === false) {
@@ -106,7 +107,7 @@ function writeIdToFile(id) {
 }
 
 function sendDiscordMessage(message, topZoveelPositie) {
-  logger.info('New topZoveel posted! ID: ' + topZoveelPositie, message);
+  console.log('New topZoveel posted! ' + message);
   bot.sendMessage({
     to: channelID,
     message: message
