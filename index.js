@@ -1,4 +1,5 @@
 // Dag Reaguurder! Dit alles was niet mogelijk geweest zonder @Dyon, @Ruben en @Polatic
+// Niet te kritisch op de code a.u.b., haast, drank, brak, je kent het wel..
 
 // TODO: Automatically get channelID ( // to: [Object.keys(bot.channels)], ?)
 // const channelID = "528606323089211404"; // Exquickie test
