@@ -1,10 +1,13 @@
 // Goedemorgen Reaguurder!
 
-// TODO: Automatically get channelID
-const channelID = "528606323089211404";
+// TODO: Automatically get channelID ( // to: [Object.keys(bot.channels)], ?)
+// const channelID = "528606323089211404"; // Exquickie test
+// const channelID = "528911109097521154"; // Dumpert test
+const channelID = "528521165057032202"; // Dumpert top zoveel
+const dumpertChannelID = "528521165057032202";
 
 const googleCredentials = require('./creds/google-creds.json');
-const token = require('./creds/token.json');
+const token = require('./creds/token.json').token;
 
 const Discord = require('discord.io');
 const logger = require('winston');
@@ -23,7 +26,7 @@ const trackerFile = './entries.json';
 const postedObject = readPostedObjectFromFile();
 
 let checking = false;
-const intervalCheck = 5 * 1000;
+const intervalCheck = 30 * 1000;
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -102,7 +105,6 @@ function readPostedObjectFromFile() {
 function writeIdToFile(id) {
   logger.info('Writing bot post to file!');
   postedObject[id].postedInDiscord = true;
-  console.log(postedObject[id]);
   const newData = JSON.stringify(postedObject);  
   fs.writeFile(trackerFile, newData, function (err) {
     if (err) {
@@ -130,7 +132,7 @@ function sendDiscordMessage(message, topZoveelPositie) {
 
 /// vvvvv DUMMY FUNCTIONS vvvvvv ///
 
-const startScriptFromId = 686;
+const startScriptFromId = 653;
 function newCreatePostedTrackerFromId(id) {
   let jsonData = {};
   for (let i = 1337; i > 0; i--) {
