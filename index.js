@@ -13,7 +13,6 @@ const fs = require('fs');
 const spreadsheetId = '1eUNwGM76Pp6T18VWx3ZE_sY7kEIsNgPgKr1a1NjtcTM';
 const doc = new GoogleSpreadsheet(spreadsheetId);
 const trackerFile = './trackers/posted-tracker.json';
-let postedObject = readPostedObjectFromFile();
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
@@ -54,6 +53,7 @@ function checkForNewEntries() {
           offset: 1,
           // limit: 1,
         }, function(err, rows) {
+          let postedObject = readPostedObjectFromFile();
           rows.forEach(row => {
             const topZoveelPositie = row.nummer;
             if (postedObject[topZoveelPositie] === false && row['dumpert-link']) {
@@ -77,7 +77,7 @@ function readPostedObjectFromFile() {
   return data;
 }
 
-function writeIdToFile(id) {
+function writeIdToFile(postedObject) {
   postedObject[id] = true;
   const newData = JSON.stringify(postedObject);  
   fs.writeFile(trackerFile, newData, function (err) {
