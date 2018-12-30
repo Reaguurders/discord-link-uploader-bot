@@ -18,7 +18,7 @@
 
 
 // IMPORTANT!!!!!!!!!!!! Vul hier je testkanaal ID in...
-const channelID = '';
+const channelID = '361198857289334786';
 
 
 
@@ -42,7 +42,7 @@ const trackerFile = './entries.json';
 const postedObject = readPostedObjectFromFile();
 
 let checking = false;
-const intervalCheck = 30 * 1000;
+const intervalCheck = 5 * 1000;
 
 // Configure logger settings
 logger.remove(logger.transports.Console);
