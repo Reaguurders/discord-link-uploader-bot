@@ -1,7 +1,10 @@
 // Dag Reaguurder! Dit alles was niet mogelijk geweest zonder @Dyon, @Ruben en @Polatic
 // Niet te kritisch op de code a.u.b., haast, drank, brak, je kent het wel..
 // Run "npm install https://github.com/woor/discord.io/tarball/gateway_v6" nog even met de hand, op de server had ik problemen met installatie hiervan.. Is wel nodig
-// Eeeeeeeen, 
+// Eeeeeeeen, create service accoutn op: https://support.google.com/a/answer/7378726?hl=en
+// Eeeeeeeen, vraag even iemand in het technisch-geneuzel kanaal om token.js
+// creds/google-creds.json => service account info
+// creds/token.js => token van de bot (die je moet dus even vragen)
 
 // TODO: Automatically get channelID ( // to: [Object.keys(bot.channels)], ?)
 // const channelID = "528606323089211404"; // Exquickie test
